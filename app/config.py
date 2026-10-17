@@ -7,7 +7,9 @@ class Settings(BaseSettings):
     tradingview_webhook_secret: str = ""
     finnhub_api_key: str = ""
     twelve_data_api_key: str = ""
-    max_daily_loss_percent: float = 3.0
+    exchange: str = "kraken"
+    live_execution_enabled: bool = False
+    max_daily_loss_percent: float = 2.0
     max_consecutive_losses: int = 3
     emergency_halt: bool = False
     database_url: str = "sqlite:///./mpv_pro_v5.db"
