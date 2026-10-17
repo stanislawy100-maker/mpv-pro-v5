@@ -1,3 +1,4 @@
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -7,7 +8,10 @@ class Settings(BaseSettings):
     tradingview_webhook_secret: str = ""
     finnhub_api_key: str = ""
     twelve_data_api_key: str = ""
-    max_daily_loss_percent: float = 3.0
+    # The project specification sets a hard 2% planning limit. This setting
+    # currently governs the legacy paper-risk estimate only; it is not yet a
+    # durable portfolio-wide drawdown control.
+    max_daily_loss_percent: float = Field(default=2.0, gt=0, le=2.0)
     max_consecutive_losses: int = 3
     emergency_halt: bool = False
     database_url: str = "sqlite:///./mpv_pro_v5.db"
