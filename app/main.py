@@ -12,6 +12,7 @@ from fastapi import FastAPI, Header, HTTPException, Query
 from pydantic import BaseModel, Field, model_validator
 
 from app.config import settings
+from app.ctrader import router as ctrader_router
 from app.backtest import run_backtest
 from app.timeframes import get_timeframe_profile
 from app.indicators import calculate_indicators
@@ -35,6 +36,9 @@ app = FastAPI(
     description="Forex and crypto signal research API. Live orders are disabled.",
     lifespan=lifespan,
 )
+
+
+app.include_router(ctrader_router)
 
 
 class RiskRequest(BaseModel):

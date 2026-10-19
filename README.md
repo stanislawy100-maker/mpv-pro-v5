@@ -137,3 +137,15 @@ Do not put secrets in the repository or Docker image. The `.dockerignore` exclud
 Kraken is the selected exchange for this project. The current implementation uses public Kraken Spot market data only; Kraken derivatives eligibility, demo order integration, contract-aware risk sizing, protective orders, and reconciliation remain unimplemented. Real-money execution must remain disabled until all validation gates are passed and the user separately authorizes it. No API key or secret should ever be committed to this repository.
 
 **Deployment status:** configuration only; this repository is not yet a deployed public service.
+
+
+## cTrader Open API (read-only setup)
+
+MPV PRO V5 includes an initial cTrader setup endpoint. It deliberately requests the official `accounts` OAuth scope (read-only) and uses the demo environment as the intended starting point. It does not place orders and does not yet establish an authenticated market-data session.
+
+1. Register an application in the [cTrader Open API portal](https://openapi.ctrader.com/apps).
+2. Configure `CTRADER_CLIENT_ID`, `CTRADER_CLIENT_SECRET`, and `CTRADER_REDIRECT_URI` as environment variables. Never commit actual credentials.
+3. Open `GET /ctrader/status` to check configuration and `GET /ctrader/authorize-url` to generate the official OAuth approval URL.
+4. Approve only if the app and redirect URI are yours. Keep `LIVE_EXECUTION_ENABLED=false`.
+
+**Important:** these endpoints verify configuration and build the read-only authorization URL only. They do not claim that an account is connected, market data is flowing, or demo orders are testable. The next implementation step is the authenticated cTrader Open API session, symbol/candle retrieval, and demo-only paper validation. cTrader Open API requires application/account authorization; unlike public Kraken endpoints, it is not anonymous market data.

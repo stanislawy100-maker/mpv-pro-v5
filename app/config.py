@@ -7,6 +7,9 @@ class Settings(BaseSettings):
     tradingview_webhook_secret: str = ""
     finnhub_api_key: str = ""
     twelve_data_api_key: str = ""
+    ctrader_client_id: str = ""
+    ctrader_client_secret: str = ""
+    ctrader_redirect_uri: str = ""
     exchange: str = "kraken"
     live_execution_enabled: bool = False
     max_daily_loss_percent: float = 2.0
