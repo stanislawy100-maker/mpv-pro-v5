@@ -140,3 +140,11 @@ Do not put secrets in the repository or Docker image. The `.dockerignore` exclud
 A broker/exchange has not been selected. Real-money execution should not be enabled until a specific platform is chosen, its test environment is validated, and order sizing/stop behaviour is verified. No API key or secret should ever be committed to this repository.
 
 **Deployment status:** configuration only; this repository is not yet a deployed public service.
+
+## CoinMarketCap market screener (read-only)
+
+`GET /coinmarketcap/market-screener` ranks CoinMarketCap-listed assets by a transparent heuristic using 24-hour and 7-day percentage change plus 24-hour volume-to-market-cap ratio. It defaults to the top 100 listings, minimum market cap of USD 50 million, minimum 24-hour volume of USD 5 million, and excludes common stablecoin symbols. Filters can be adjusted with `limit`, `min_market_cap_usd`, `min_volume_24h_usd`, and `exclude_stablecoins`.
+
+By default the adapter uses CoinMarketCap's keyless public API. For authenticated API access, set `COINMARKETCAP_API_KEY` in the deployment environment; never commit the key. Responses are cached in-process for 60 seconds and include the source timestamp where supplied. CoinMarketCap's available endpoints and quotas depend on the current provider plan; review the [official API documentation](https://coinmarketcap.com/api/documentation/pro-api-reference/keyless-public-api/) before relying on specific data or rate limits.
+
+This is a **market-discovery and research feed**, not an exchange execution API. CoinMarketCap's aggregated prices/volumes do not establish whether a specific Kraken pair is tradable or what its executable order-book price is. Treat the score as a heuristic ranking, not a buy/sell signal. The endpoint is read-only and never places orders.

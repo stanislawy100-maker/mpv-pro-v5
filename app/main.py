@@ -476,3 +476,7 @@ def tradingview_webhook(signal: TradingViewSignal, x_mpv_webhook_secret: str | N
 @app.get("/signals")
 def get_signals(limit: int = Query(default=50, ge=1, le=200)):
     return {"signals": recent_signals(limit=limit), "live_execution_enabled": False}
+
+# CoinMarketCap provides market data only; this router never places exchange orders.
+from app.coinmarketcap import router as coinmarketcap_router
+app.include_router(coinmarketcap_router)
